@@ -1,26 +1,52 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './Header';
+import Main from './Main';
+import Search from './Search';
 
-function App() {
+
+
+class App extends React.Component {
+
+constructor(props){
+  super(props)
+  this.state = {
+    dogs : [
+      { name: "Max", breed: "German Shepard"},
+      { name: "Frie", breed: "Lab"},
+      { name: "Rex", breed: "Poodle"},
+      { name: "George", breed: "Pitbull"}
+    ],
+    dogsSearch: ''
+  }
+}
+onHandleInput = (e) => {
+  console.log(e.target.value);
+  this.setState({dogsSearch: e.target.value});
+}
+ 
+  filteredDogs = (e) => {
+    e.preventDefault();
+  }
+
+render() {
+  debugger;
+  // if (this.state.dogsSearch !== "" && this.state.dogs.toLowerCase().indexOf( this.state.dogsSearch.toLowerCase()) === -1) {
+  //   return null
+  // } 
+  const filtDogs = this.state.dogs.filter(dog => {
+    return dog.name.toLowerCase().indexOf(this.state.dogsSearch.toLowerCase()) !== -1})
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Header />
+     <Search  filteredDogs={this.filteredDogs} onHandleInput={this.onHandleInput} />
+     <Main filtDogs={filtDogs} dogs={this.state.dogs}/>
+    
     </div>
   );
+}
+
 }
 
 export default App;
